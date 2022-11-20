@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="KO">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+
+    <style>
+   
+        * { margin :0; padding:0; }
+        body {
+            width:100%;
+            background-color:rgba(255, 96, 96, 0.3);
+        }
+
+        form {
+            width:600px;
+            height:400px;
+            padding:100px 200px;
+            margin:200px auto;
+            box-sizing:border-box;
+            background-color:rgba(0,0,0,0.3);
+        }
+    </style>
+
+</head>
+<body>
+    
+    <form>
+        <h1>회원가입</h1>
+        <div>이메일 : <input type="email" id="signUpEmail"></div>
+        <div>패스워드 : <input type="password" id="signUpPassword"></div>
+        <button type="submit" id="signUpButton">회원가입 하기</button>
+        <button>로그인하러 가기</button>
+    </form>
+
+    <form>
+        <h1>로그인</h1>
+        <div>이메일 : <input type="email" id="signInEmail"></div>
+        <div>패스워드 : <input type="password" id="signInPassword"></div>
+        <button type="submit" id="signInButton">로그인 하기</button>
+        <button>회원가입하러 가기</button>
+    </form>
+
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyDVLDrtznzu3-rGzapqfWZEBH_-iVNNfgY",
+          authDomain: "study-1c16e.firebaseapp.com",
+          projectId: "study-1c16e",
+          storageBucket: "study-1c16e.appspot.com",
+          messagingSenderId: "855789791083",
+          appId: "1:855789791083:web:2c607e8802d2d79d4f8e2e",
+          measurementId: "G-JV7B7JQ5R9"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        import { getAuth, createUserWithEmailAndPassword , signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js";
+
+        const auth = getAuth();
+      
+        document.getElementById('signUpButton').addEventListener('click', (event) => {
+            event.preventDefault()//form 태그는 제공하는 순간 새로고침 현상이 일어나는데, 그걸 막기 위한 코드
+            const signUpemail = document.getElementById('signUpEmail').value
+            const signUppassword = document.getElementById('signUpPassword').value
+            
+            createUserWithEmailAndPassword(auth, signUpemail, signUppassword)
+                .then((userCredential) => {
+                    console.log(userCredential)
+                    // Signed in 
+                    const user = userCredential.user;
+                    // ...
+                })
+                .catch((error) => {
+                    console.log('error')
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    // ..
+                });
+        })
+
+        document.getElementById('signInButton').addEventListener('click', (event) => {
+            event.preventDefault()//form 태그는 제공하는 순간 새로고침 현상이 일어나는데, 그걸 막기 위한 코드
+            const signInemail = document.getElementById('signInEmail').value
+            const signInpassword = document.getElementById('signInPassword').value
+
+        signInWithEmailAndPassword(auth, signInemail, signInpassword)
+                .then((userCredential) => {
+                    // Signed in 
+                    console.log(userCredential)
+                    const user = userCredential.user;
+                    // ...
+                })
+                .catch((error) => {
+                    console.log('로그인 실패')
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                });
+
+        })
+
+      </script>
+
+</body>
+</html>
